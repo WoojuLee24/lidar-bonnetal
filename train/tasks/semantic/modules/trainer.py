@@ -303,6 +303,11 @@ class Trainer():
     model.train()
 
     end = time.time()
+
+    ###debug##
+    _, k = next(enumerate(train_loader))
+    ###########
+
     for i, (in_vol, proj_mask, proj_labels, _, path_seq, path_name, _, _, _, _, _, _, _, _, _) in enumerate(train_loader):
         # measure data loading time
       data_time.update(time.time() - end)

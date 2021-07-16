@@ -16,6 +16,17 @@ def is_label(filename):
   return any(filename.endswith(ext) for ext in EXTENSIONS_LABEL)
 
 
+class SemanticMapScan(Dataset):
+    def __init__(self, *datasets):
+        self.datasets= datasets
+
+    def __getitem__(self, i):
+        return tuple(d[i] for d in self.datasets)
+
+    def __len__(self):
+        return min(len(d) for d in self.datasets)
+
+
 class SemanticKitti(Dataset):
 
   def __init__(self, root,    # directory where data is
@@ -252,7 +263,16 @@ class Parser():
     self.nclasses = len(self.learning_map_inv)
 
     # Data loading code
-    self.train_dataset = SemanticKitti(root=self.root,
+    # self.train_dataset = SemanticKitti(root=self.root,
+    #                                    sequences=self.train_sequences,
+    #                                    labels=self.labels,
+    #                                    color_map=self.color_map,
+    #                                    learning_map=self.learning_map,
+    #                                    learning_map_inv=self.learning_map_inv,
+    #                                    sensor=self.sensor,
+    #                                    max_points=max_points,
+    #                                    gt=self.gt)
+    train_dataset = SemanticKitti(root=self.root,
                                        sequences=self.train_sequences,
                                        labels=self.labels,
                                        color_map=self.color_map,
@@ -261,6 +281,7 @@ class Parser():
                                        sensor=self.sensor,
                                        max_points=max_points,
                                        gt=self.gt)
+    self.train_dataset = SemanticMapScan((train_dataset, train_dataset))
 
     self.trainloader = torch.utils.data.DataLoader(self.train_dataset,
                                                    batch_size=self.batch_size,
@@ -271,15 +292,27 @@ class Parser():
     assert len(self.trainloader) > 0
     self.trainiter = iter(self.trainloader)
 
-    self.valid_dataset = SemanticKitti(root=self.root,
-                                       sequences=self.valid_sequences,
-                                       labels=self.labels,
-                                       color_map=self.color_map,
-                                       learning_map=self.learning_map,
-                                       learning_map_inv=self.learning_map_inv,
-                                       sensor=self.sensor,
-                                       max_points=max_points,
-                                       gt=self.gt)
+    # self.valid_dataset = SemanticKitti(root=self.root,
+    #                                    sequences=self.valid_sequences,
+    #                                    labels=self.labels,
+    #                                    color_map=self.color_map,
+    #                                    learning_map=self.learning_map,
+    #                                    learning_map_inv=self.learning_map_inv,
+    #                                    sensor=self.sensor,
+    #                                    max_points=max_points,
+    #                                    gt=self.gt)
+
+    valid_dataset = SemanticKitti(root=self.root,
+                                  sequences=self.valid_sequences,
+                                  labels=self.labels,
+                                  color_map=self.color_map,
+                                  learning_map=self.learning_map,
+                                  learning_map_inv=self.learning_map_inv,
+                                  sensor=self.sensor,
+                                  max_points=max_points,
+                                  gt=self.gt)
+
+    self.valid_dataset = SemanticMapScan((valid_dataset, valid_dataset))
 
     self.validloader = torch.utils.data.DataLoader(self.valid_dataset,
                                                    batch_size=self.batch_size,
