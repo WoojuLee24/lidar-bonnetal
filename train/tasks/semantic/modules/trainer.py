@@ -308,7 +308,9 @@ class Trainer():
     _, k = next(enumerate(train_loader))
     ###########
 
-    for i, (in_vol, proj_mask, proj_labels, _, path_seq, path_name, _, _, _, _, _, _, _, _, _) in enumerate(train_loader):
+    # for i, (in_vol, proj_mask, proj_labels, _, path_seq, path_name, _, _, _, _, _, _, _, _, _) in enumerate(train_loader):
+    for i, (k1, k2) in enumerate(train_loader):
+      a = i
         # measure data loading time
       data_time.update(time.time() - end)
       if not self.multi_gpu and self.gpu:

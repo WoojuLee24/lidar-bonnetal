@@ -17,10 +17,15 @@ def is_label(filename):
 
 
 class SemanticMapScan(Dataset):
-    def __init__(self, *datasets):
-        self.datasets= datasets
+    def __init__(self, map, scan):
+        self.map = map
+        self.scan = scan
 
     def __getitem__(self, i):
+        proj, proj_mask, proj_labels, unproj_labels, path_seq, path_name, proj_x, proj_y, proj_range, unproj_range, proj_xyz, unproj_xyz, proj_remission, unproj_remissions, unproj_n_points
+
+
+
         return tuple(d[i] for d in self.datasets)
 
     def __len__(self):
