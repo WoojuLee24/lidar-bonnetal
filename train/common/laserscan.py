@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 # This file is covered by the LICENSE file in the root of this project.
 import numpy as np
-
+import os
 
 class LaserScan:
   """Class that contains LaserScan with x,y,z,r"""
-  EXTENSIONS_SCAN = ['.bin']
+  EXTENSIONS_SCAN = ['.bin', '.txt']
 
   def __init__(self, project=False, H=64, W=1024, fov_up=3.0, fov_down=-25.0):
     self.project = project
@@ -71,8 +71,12 @@ class LaserScan:
       raise RuntimeError("Filename extension is not valid scan file.")
 
     # if all goes well, open pointcloud
-    scan = np.fromfile(filename, dtype=np.float32)
-    scan = scan.reshape((-1, 4))
+    ext = os.path.splitext(filename)[1]
+    if ext == ".bin":
+      scan = np.fromfile(filename, dtype=np.float32)
+      scan = scan.reshape((-1, 4))
+    elif ext == ".txt":
+      scan = np.loadtxt(filename, dtype=np.float32)
 
     # put in attribute
     points = scan[:, 0:3]    # get xyz
