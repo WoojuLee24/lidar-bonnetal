@@ -20,13 +20,9 @@ class SemanticMapScan(Dataset):
     def __init__(self, map, scan):
         self.map = map
         self.scan = scan
-
+        self.datasets = (map, scan)
     def __getitem__(self, i):
-        proj, proj_mask, proj_labels, unproj_labels, path_seq, path_name, proj_x, proj_y, proj_range, unproj_range, proj_xyz, unproj_xyz, proj_remission, unproj_remissions, unproj_n_points
-
-
-
-        return tuple(d[i] for d in self.datasets)
+        return self.map[i], self.scan[i]
 
     def __len__(self):
         return min(len(d) for d in self.datasets)
@@ -286,7 +282,7 @@ class Parser():
                                        sensor=self.sensor,
                                        max_points=max_points,
                                        gt=self.gt)
-    self.train_dataset = SemanticMapScan((train_dataset, train_dataset))
+    self.train_dataset = SemanticMapScan(train_dataset, train_dataset)
 
     self.trainloader = torch.utils.data.DataLoader(self.train_dataset,
                                                    batch_size=self.batch_size,
@@ -317,7 +313,7 @@ class Parser():
                                   max_points=max_points,
                                   gt=self.gt)
 
-    self.valid_dataset = SemanticMapScan((valid_dataset, valid_dataset))
+    self.valid_dataset = SemanticMapScan(valid_dataset, valid_dataset)
 
     self.validloader = torch.utils.data.DataLoader(self.valid_dataset,
                                                    batch_size=self.batch_size,

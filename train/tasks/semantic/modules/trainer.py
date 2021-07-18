@@ -309,10 +309,10 @@ class Trainer():
     ###########
 
     # for i, (in_vol, proj_mask, proj_labels, _, path_seq, path_name, _, _, _, _, _, _, _, _, _) in enumerate(train_loader):
-    for i, (k1, k2) in enumerate(train_loader):
-      a = i
+    for i, (map, scan) in enumerate(train_loader):
         # measure data loading time
       data_time.update(time.time() - end)
+      in_vol, proj_mask, proj_labels, _, path_seq, path_name = scan[0], scan[1], scan[2], scan[3], scan[4], scan[5]
       if not self.multi_gpu and self.gpu:
         in_vol = in_vol.cuda()
         proj_mask = proj_mask.cuda()
