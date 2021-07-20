@@ -78,6 +78,16 @@ class iouEval:
     iou_mean = (intersection[self.include] / union[self.include]).mean()
     return iou_mean, iou  # returns "iou mean", "iou per class" ALL CLASSES
 
+  def getF1Score(self, map, preds, targets):
+    reserve_map = map-preds
+    reserve_map_static, reserve_map_dynamic = reserve_map
+    target_static, target_dynamic = targets
+    pr = reserve_map_static / target_static
+    rr = 1 - (reserve_map_dynamic / target_dynamic)
+
+
+    return pr, rr
+
   def getacc(self):
     tp, fp, fn = self.getStats()
     total_tp = tp.sum()

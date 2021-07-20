@@ -173,7 +173,7 @@ class LaserScan:
 
 class SemLaserScan(LaserScan):
   """Class that contains LaserScan with x,y,z,r,sem_label,sem_color_label,inst_label,inst_color_label"""
-  EXTENSIONS_LABEL = ['.label']
+  EXTENSIONS_LABEL = ['.label', '.txt']
 
   def __init__(self,  sem_color_dict=None, project=False, H=64, W=1024, fov_up=3.0, fov_down=-25.0, max_classes=300):
     super(SemLaserScan, self).__init__(project, H, W, fov_up, fov_down)
@@ -245,6 +245,15 @@ class SemLaserScan(LaserScan):
     # if all goes well, open label
     label = np.fromfile(filename, dtype=np.int32)
     label = label.reshape((-1))
+
+    # if all goes well, open pointcloud
+    ext = os.path.splitext(filename)[1]
+    if ext == ".label":
+      label = np.fromfile(filename, dtype=np.int32)
+      label = label.reshape((-1))
+    elif ext == ".txt":
+      label = np.loadtxt(filename, dtype=np.int32)
+
 
     # set it
     self.set_label(label)

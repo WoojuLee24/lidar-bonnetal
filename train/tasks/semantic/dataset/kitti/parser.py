@@ -5,7 +5,7 @@ from torch.utils.data import Dataset
 from common.laserscan import LaserScan, SemLaserScan
 
 EXTENSIONS_SCAN = ['.bin', '.txt']
-EXTENSIONS_LABEL = ['.label']
+EXTENSIONS_LABEL = ['.label', '.txt']
 
 
 def is_scan(filename):
