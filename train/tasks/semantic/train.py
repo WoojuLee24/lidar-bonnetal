@@ -21,6 +21,13 @@ if __name__ == '__main__':
       help='Dataset to train with. No Default',
   )
   parser.add_argument(
+      '--scan_dataset', '-sd',
+      type=str,
+      required=False,
+      default=None,
+      help='Scan Dataset to train with.',
+  )
+  parser.add_argument(
       '--arch_cfg', '-ac',
       type=str,
       required=True,
@@ -53,6 +60,7 @@ if __name__ == '__main__':
   print("----------")
   print("INTERFACE:")
   print("dataset", FLAGS.dataset)
+  print("scan dataset", FLAGS.scan_dataset)
   print("arch_cfg", FLAGS.arch_cfg)
   print("data_cfg", FLAGS.data_cfg)
   print("log", FLAGS.log)
@@ -111,5 +119,5 @@ if __name__ == '__main__':
     quit()
 
   # create trainer and start the training
-  trainer = Trainer(ARCH, DATA, FLAGS.dataset, FLAGS.log, FLAGS.pretrained)
+  trainer = Trainer(ARCH, DATA, FLAGS.dataset, FLAGS.scan_dataset, FLAGS.log, FLAGS.pretrained)
   trainer.train()

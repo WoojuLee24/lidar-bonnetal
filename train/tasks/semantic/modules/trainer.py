@@ -27,11 +27,12 @@ from tasks.semantic.modules.ioueval import *
 
 
 class Trainer():
-  def __init__(self, ARCH, DATA, datadir, logdir, path=None):
+  def __init__(self, ARCH, DATA, datadir, scan_datadir, logdir, path=None):
     # parameters
     self.ARCH = ARCH
     self.DATA = DATA
     self.datadir = datadir
+    self.scan_datadir = scan_datadir
     self.log = logdir
     self.path = path
 
@@ -53,6 +54,7 @@ class Trainer():
     parserPath = os.path.join(booger.TRAIN_PATH, "tasks", "semantic",  "dataset", self.DATA["name"], "parser.py")
     parserModule = imp.load_source("parserModule", parserPath)
     self.parser = parserModule.Parser(root=self.datadir,
+                                      scan_root=self.scan_datadir,
                                       train_sequences=self.DATA["split"]["train"],
                                       valid_sequences=self.DATA["split"]["valid"],
                                       test_sequences=None,
@@ -304,15 +306,14 @@ class Trainer():
 
     end = time.time()
 
-    ###debug##
-    _, k = next(enumerate(train_loader))
-    ###########
-
-    # for i, (in_vol, proj_mask, proj_labels, _, path_seq, path_name, _, _, _, _, _, _, _, _, _) in enumerate(train_loader):
-    for i, (map, scan) in enumerate(train_loader):
-        # measure data loading time
+    for i, k in enumerate(train_loader):
       data_time.update(time.time() - end)
-      in_vol, proj_mask, proj_labels, _, path_seq, path_name = scan[0], scan[1], scan[2], scan[3], scan[4], scan[5]
+      # measure data loading time
+      if self.scan_datadir == None:
+        in_vol, proj_mask, proj_labels, _, path_seq, path_name = k[0], k[1], k[2], k[3], k[4], k[5]
+      else:
+        map, scan = k
+        in_vol, proj_mask, proj_labels, _, path_seq, path_name = map[0], map[1], map[2], map[3], map[4], map[5]
       if not self.multi_gpu and self.gpu:
         in_vol = in_vol.cuda()
         proj_mask = proj_mask.cuda()
