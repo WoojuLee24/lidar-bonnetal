@@ -455,9 +455,9 @@ class Trainer():
             'IoU avg {iou.avg:.3f}'.format(batch_time=batch_time,
                                            loss=losses,
                                            acc=acc, iou=iou))
-      # print also classwise
-      for i, jacc in enumerate(class_jaccard):
-        print('IoU class {i:} [{class_str:}] = {jacc:.3f}'.format(
-            i=i, class_str=class_func(i), jacc=jacc))
+      # # print also classwise
+      # for i, jacc in enumerate(class_jaccard):
+      #   print('IoU class {i:} [{class_str:}] = {jacc:.3f}'.format(
+      #       i=i, class_str=class_func(i), jacc=jacc))
 
     return acc.avg, iou.avg, losses.avg, rand_imgs
