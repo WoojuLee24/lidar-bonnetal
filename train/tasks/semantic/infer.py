@@ -82,11 +82,11 @@ if __name__ == '__main__':
       print("valid", seq)
       os.makedirs(os.path.join(FLAGS.log, "sequences", seq))
       os.makedirs(os.path.join(FLAGS.log, "sequences", seq, "predictions"))
-    for seq in DATA["split"]["test"]:
-      seq = '{0:02d}'.format(int(seq))
-      print("test", seq)
-      os.makedirs(os.path.join(FLAGS.log, "sequences", seq))
-      os.makedirs(os.path.join(FLAGS.log, "sequences", seq, "predictions"))
+    # for seq in DATA["split"]["test"]:
+    #   seq = '{0:02d}'.format(int(seq))
+    #   print("test", seq)
+    #   os.makedirs(os.path.join(FLAGS.log, "sequences", seq))
+    #   os.makedirs(os.path.join(FLAGS.log, "sequences", seq, "predictions"))
   except Exception as e:
     print(e)
     print("Error creating log directory. Check permissions!")
