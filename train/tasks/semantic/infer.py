@@ -22,6 +22,13 @@ if __name__ == '__main__':
       help='Dataset to train with. No Default',
   )
   parser.add_argument(
+    '--scan_dataset', '-sd',
+    type=str,
+    required=False,
+    default=None,
+    help='Scan Dataset to train with.',
+  )
+  parser.add_argument(
       '--log', '-l',
       type=str,
       default=os.path.expanduser("~") + '/logs/' +
@@ -105,5 +112,5 @@ if __name__ == '__main__':
     quit()
 
   # create user and infer dataset
-  user = User(ARCH, DATA, FLAGS.dataset, FLAGS.log, FLAGS.model)
+  user = User(ARCH, DATA, FLAGS.dataset, FLAGS.scan_dataset, FLAGS.log, FLAGS.model)
   user.infer()

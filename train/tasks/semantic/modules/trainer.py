@@ -410,7 +410,13 @@ class Trainer():
 
     with torch.no_grad():
       end = time.time()
-      for i, (in_vol, proj_mask, proj_labels, _, path_seq, path_name, _, _, _, _, _, _, _, _, _) in enumerate(val_loader):
+      # for i, (in_vol, proj_mask, proj_labels, _, path_seq, path_name, _, _, _, _, _, _, _, _, _) in enumerate(val_loader):
+      for i, k in enumerate(val_loader):
+        if self.scan_datadir == None:
+          in_vol, proj_mask, proj_labels, _, path_seq, path_name = k[0], k[1], k[2], k[3], k[4], k[5]
+        else:
+          map, scan = k
+          in_vol, proj_mask, proj_labels, _, path_seq, path_name = map[0], map[1], map[2], map[3], map[4], map[5]
         if not self.multi_gpu and self.gpu:
           in_vol = in_vol.cuda()
           proj_mask = proj_mask.cuda()

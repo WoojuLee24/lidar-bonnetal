@@ -22,11 +22,12 @@ from tasks.semantic.postproc.KNN import KNN
 
 
 class User():
-  def __init__(self, ARCH, DATA, datadir, logdir, modeldir):
+  def __init__(self, ARCH, DATA, datadir, scandir, logdir, modeldir):
     # parameters
     self.ARCH = ARCH
     self.DATA = DATA
     self.datadir = datadir
+    self.scandir = scandir
     self.logdir = logdir
     self.modeldir = modeldir
 
@@ -35,9 +36,10 @@ class User():
                                    booger.TRAIN_PATH + '/tasks/semantic/dataset/' +
                                    self.DATA["name"] + '/parser.py')
     self.parser = parserModule.Parser(root=self.datadir,
+                                      scan_root=self.scandir,
                                       train_sequences=self.DATA["split"]["train"],
                                       valid_sequences=self.DATA["split"]["valid"],
-                                      test_sequences=self.DATA["split"]["valid"],
+                                      test_sequences=None,
                                       labels=self.DATA["labels"],
                                       color_map=self.DATA["color_map"],
                                       learning_map=self.DATA["learning_map"],
@@ -80,9 +82,9 @@ class User():
     # do valid set
     self.infer_subset(loader=self.parser.get_valid_set(),
                       to_orig_fn=self.parser.to_original)
-    # do test set
-    self.infer_subset(loader=self.parser.get_test_set(),
-                      to_orig_fn=self.parser.to_original)
+    # # do test set
+    # self.infer_subset(loader=self.parser.get_test_set(),
+    #                   to_orig_fn=self.parser.to_original)
 
     print('Finished Infering')
 
@@ -98,8 +100,16 @@ class User():
 
     with torch.no_grad():
       end = time.time()
-
-      for i, (proj_in, proj_mask, _, _, path_seq, path_name, p_x, p_y, proj_range, unproj_range, _, _, _, _, npoints) in enumerate(loader):
+      # for i, (proj_in, proj_mask, _, _, path_seq, path_name, p_x, p_y, proj_range, unproj_range, _, _, _, _, npoints) in enumerate(loader):
+      for i, k in enumerate(loader):
+        if self.scandir == None:
+          proj_in, proj_mask, _, _, path_seq, path_name, p_x, p_y, proj_range, unproj_range, _, _, _, _, npoints = \
+              k[0], k[1], k[2], k[3], k[4], k[5], k[6], k[7], k[8], k[9], k[10], k[11], k[12], k[13], k[14]
+        else:
+          map, scan = k
+          proj_in, proj_mask, _, _, path_seq, path_name, p_x, p_y, proj_range, unproj_range, _, _, _, _, npoints = \
+              map[0], map[1], map[2], map[3], map[4], map[5], map[6], map[7], map[8], map[9], map[10], \
+              map[11], map[12], map[13], map[14]
         # first cut to rela size (batch size one allows it)
         p_x = p_x[0, :npoints]
         p_y = p_y[0, :npoints]
@@ -151,4 +161,5 @@ class User():
         # save scan
         path = os.path.join(self.logdir, "sequences",
                             path_seq, "predictions", path_name)
-        pred_np.tofile(path)
+        # pred_np.tofile(path)
+        np.savetxt(path, pred_np, fmt='%i')
