@@ -157,6 +157,7 @@ class User():
 
         # map to original label
         pred_np = to_orig_fn(pred_np)
+        pred_np[pred_np == 1] = 999
 
         # save scan
         path = os.path.join(self.logdir, "sequences",
