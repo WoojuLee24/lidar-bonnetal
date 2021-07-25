@@ -1,7 +1,7 @@
 import numpy as np
 import glob as glob
 
-path = glob.glob('/ws/external/infer_log/prediction_results/sequences/*/predictions/*.txt')
+path = glob.glob('/ws/external/map_exp1_log/prediction_results/sequences/*/predictions/*.txt')
 for file in path:
     pred_np = np.loadtxt(file)
     pred_np[pred_np == 1] = 999

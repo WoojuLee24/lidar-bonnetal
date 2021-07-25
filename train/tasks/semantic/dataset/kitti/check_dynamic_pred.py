@@ -1,8 +1,9 @@
 import numpy as np
 import glob as glob
 
-# path = glob.glob('/ws/external/infer_log/prediction_results/sequences/*/predictions/*.txt')
-path = glob.glob("/ws/external/infer_log/*.txt")
+# path = glob.glob('/ws/external/map_exp1_log2/prediction_results/sequences/*/predictions/*.txt')
+path = glob.glob('/ws/external/map_exp1_log2/prediction_results/sequences/00/predictions/*.txt')
+# path = glob.glob("/ws/external/infer_log/*.txt")
 
 dynamic = 0
 static = 0
