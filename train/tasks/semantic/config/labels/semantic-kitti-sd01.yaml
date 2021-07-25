@@ -146,7 +146,7 @@ learning_map_inv: # inverse of previous map
   0: 0
   252: 1
 learning_ignore: # Ignore classes
-  0: True      # "unlabeled", and others ignored
+  0: False      # "unlabeled", and others ignored
   1: False     # "car"
   2: False     # "bicycle"
   3: False     # "motorcycle"
