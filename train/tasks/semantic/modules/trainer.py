@@ -82,7 +82,7 @@ class Trainer():
         # don't weigh
         self.loss_w[x_cl] = 0
     print("Loss weights from content: ", self.loss_w.data)
-
+    self.loss_w = torch.tensor([1.0000, 2021.7], dtype=torch.float32)
     # concatenate the encoder and the head
     with torch.no_grad():
       self.model = Segmentator(self.ARCH,
