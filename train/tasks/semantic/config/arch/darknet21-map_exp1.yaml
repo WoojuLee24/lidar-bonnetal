@@ -77,7 +77,7 @@ post:
 dataset:
   labels: "kitti"
   scans: "kitti"
-  max_points: 5000000 # max of any scan in dataset
+  max_points: 7000000 # max of any scan in dataset
   sensor:
     name: "HDL64"
     type: "spherical" # projective
