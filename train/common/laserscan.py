@@ -125,7 +125,7 @@ class LaserScan:
     # get scan components
     scan_x = self.points[:, 0]
     scan_y = self.points[:, 1]
-    scan_z = self.points[:, 2]
+    scan_z = self.points[:, 2] - 1.73
 
     # get angles of all points
     yaw = -np.arctan2(scan_y, scan_x)
