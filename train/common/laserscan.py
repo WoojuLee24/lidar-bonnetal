@@ -86,7 +86,7 @@ class LaserScan:
     remissions = remissions[self.nan_points]
     self.set_points(points, remissions)
 
-  def remove_nan(self, points, remissions):
+  def remove_nan(self, points):
     """pitch = np.arcsin(scan_z / depth)"""
     scan_z = points[:, 2] - 1.73
     # get depth of all points
