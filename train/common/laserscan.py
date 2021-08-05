@@ -81,7 +81,20 @@ class LaserScan:
     # put in attribute
     points = scan[:, 0:3]    # get xyz
     remissions = scan[:, 3]  # get remission
+    # cut points
+    points = self.remove_nan(points)
     self.set_points(points, remissions)
+
+  def remove_nan(self, points):
+    """pitch = np.arcsin(scan_z / depth)"""
+    scan_z = points[:, 2] - 1.73
+    # get depth of all points
+    depth = np.linalg.norm(points, 2, axis=1)
+    pitch = np.arcsin(scan_z / depth)
+    points = points[~np.isnan(pitch)]
+
+    return points
+
 
   def set_points(self, points, remissions=None):
     """ Set scan attributes (instead of opening from file)
