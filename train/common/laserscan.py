@@ -83,9 +83,10 @@ class LaserScan:
     remissions = scan[:, 3]  # get remission
     # cut points
     points = self.remove_nan(points)
+    remissions = remissions[self.nan_points]
     self.set_points(points, remissions)
 
-  def remove_nan(self, points):
+  def remove_nan(self, points, remissions):
     """pitch = np.arcsin(scan_z / depth)"""
     scan_z = points[:, 2] - 1.73
     # get depth of all points
@@ -268,7 +269,7 @@ class SemLaserScan(LaserScan):
       label = np.loadtxt(filename, dtype=np.int32)
 
     # remove nan labels
-    
+
     # set it
     label = label[self.nan_points]
     self.set_label(label)
