@@ -91,10 +91,10 @@ class LaserScan:
     # get depth of all points
     depth = np.linalg.norm(points, 2, axis=1)
     pitch = np.arcsin(scan_z / depth)
-    points = points[~np.isnan(pitch)]
+    self.nan_points = ~np.isnan(pitch)
+    points = points[self.nan_points]
 
     return points
-
 
   def set_points(self, points, remissions=None):
     """ Set scan attributes (instead of opening from file)
@@ -267,8 +267,10 @@ class SemLaserScan(LaserScan):
     elif ext == ".txt":
       label = np.loadtxt(filename, dtype=np.int32)
 
-
+    # remove nan labels
+    
     # set it
+    label = label[self.nan_points]
     self.set_label(label)
 
   def set_label(self, label):
